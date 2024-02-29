@@ -1,41 +1,30 @@
-// const refs={
-//     box: document.querySelector(".box"),
-//     boxField:  document.querySelector(".box-field")}
+const refs = {
+  box: document.querySelector(".box"),
+  ball: document.querySelector(".ball"),
+};
 
-//     refs.box.addEventListener("click", (event)=>{
-// event.clientX;
-// event.clientY
-// console.log(event.clientX);
-//     })
+refs.box.addEventListener("click", onClickEvent);
 
-// const refs = {
-//     box: document.querySelector(".box"),
-//     ballPicture: document.querySelector(".ball-picture"),
-//   };
+function onClickEvent(event) {
+  const boxFields = event.currentTarget.getBoundingClientRect();
 
-//     refs.box.addEventListener("click", function (event) {
+  let x = event.clientX - boxFields.left - 10 - refs.ball.clientWidth / 2;
+  let y = event.clientY - boxFields.top - 10 - refs.ball.clientHeight / 2;
 
-//       // const x = event.clientX - refs.box.getBoundingClientRect().left;
-//       // const y = event.clientY - refs.box.getBoundingClientRect().top;
-//         const x = event.clientX;
-//         const y = event.clientY;
+  const maxLeftCors = boxFields.right - boxFields.left - 20 - refs.ball.clientWidth;
+  const maxBottomCors = boxFields.bottom - boxFields.top - 20 - refs.ball.clientHeight;
 
-//        refs.ballPicture.style.transform = `translate(${x - 20}px, ${y - 20}px)`;
-//     });
+  
+  if (x < 0) {
+    x = 0;
+  } else if (x > maxLeftCors) {
+    x = maxLeftCors;
+  }
+  if (y < 0) {
+    y = 0;
+  } else if (y > maxBottomCors) {
+    y = maxBottomCors;
+  }
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Отримати елементи DOM
-  const box = document.querySelector(".box");
-  const ballPicture = document.querySelector(".ball-picture");
-
-  // Додати подію click на елемент .box
-  box.addEventListener("click", function (event) {
-    // Отримати координати кліку відносно .box
-    const x = event.clientX - box.getBoundingClientRect().left;
-    const y = event.clientY - box.getBoundingClientRect().top;
-
-    // Перемістити м'яч на нові координати
-    ballPicture.style.top = y - ballPicture.offsetHeight / 2 + "px";
-    ballPicture.style.left = x - ballPicture.offsetWidth / 2 + "px";
-  });
-});
+  refs.ball.style.transform = 'translate(${x}px, ${y}px)';
+}
